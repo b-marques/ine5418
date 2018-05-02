@@ -6,3 +6,6 @@ COMPILER := g++
 
 all:
 	$(COMPILER) $(CPP_FILES) $(COMPILE_FLAGS)
+
+doxygen:
+	doxygen docs/config_doxygen

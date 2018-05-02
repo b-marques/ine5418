@@ -9,6 +9,7 @@
 
 using namespace distributed_system;
 
+
 MulticastMutualExclusionPolicy::MulticastMutualExclusionPolicy(int id,
                                                          int n_process)
     : Process(id, n_process)

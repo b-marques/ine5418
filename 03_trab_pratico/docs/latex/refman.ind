@@ -1,0 +1,80 @@
+\begin{theindex}
+
+  \item {address\+\_\+}
+    \subitem {distributed\+\_\+system\+::\+I\+PC}, \hyperpage{9}
+  \item {address\+\_\+length\+\_\+}
+    \subitem {distributed\+\_\+system\+::\+I\+PC}, \hyperpage{9}
+
+  \indexspace
+
+  \item {configure\+\_\+process\+\_\+fd}
+    \subitem {distributed\+\_\+system\+::\+I\+PC}, \hyperpage{8}
+  \item {create\+\_\+process\+\_\+fd}
+    \subitem {distributed\+\_\+system\+::\+I\+PC}, \hyperpage{8}
+
+  \indexspace
+
+  \item {distributed\+\_\+system\+::\+I\+PC}
+    \subitem {address\+\_\+}, \hyperpage{9}
+    \subitem {address\+\_\+length\+\_\+}, \hyperpage{9}
+    \subitem {configure\+\_\+process\+\_\+fd}, \hyperpage{8}
+    \subitem {create\+\_\+process\+\_\+fd}, \hyperpage{8}
+    \subitem {I\+PC}, \hyperpage{8}
+    \subitem {id\+\_\+}, \hyperpage{9}
+    \subitem {init}, \hyperpage{8}
+    \subitem {opt\+\_\+}, \hyperpage{9}
+    \subitem {rcv\+\_\+process\+\_\+fd\+\_\+}, \hyperpage{9}
+    \subitem {receive\+\_\+msg}, \hyperpage{8}
+    \subitem {send\+\_\+msg}, \hyperpage{9}
+    \subitem {send\+\_\+process\+\_\+fd\+\_\+}, \hyperpage{9}
+    \subitem {socket\+\_\+port\+\_\+}, \hyperpage{10}
+    \subitem {start\+\_\+listening}, \hyperpage{9}
+
+  \indexspace
+
+  \item {I\+PC}, \hyperpage{7}
+    \subitem {distributed\+\_\+system\+::\+I\+PC}, \hyperpage{8}
+  \item {id\+\_\+}
+    \subitem {distributed\+\_\+system\+::\+I\+PC}, \hyperpage{9}
+  \item {include/ipc.\+h}, \hyperpage{15}
+  \item {init}
+    \subitem {distributed\+\_\+system\+::\+I\+PC}, \hyperpage{8}
+
+  \indexspace
+
+  \item {message\+\_\+t}, \hyperpage{10}
+  \item {Multicast\+Mutual\+Exclusion\+Policy}, \hyperpage{10}
+
+  \indexspace
+
+  \item {opt\+\_\+}
+    \subitem {distributed\+\_\+system\+::\+I\+PC}, \hyperpage{9}
+
+  \indexspace
+
+  \item {Process}, \hyperpage{11}
+
+  \indexspace
+
+  \item {rcv\+\_\+process\+\_\+fd\+\_\+}
+    \subitem {distributed\+\_\+system\+::\+I\+PC}, \hyperpage{9}
+  \item {receive\+\_\+msg}
+    \subitem {distributed\+\_\+system\+::\+I\+PC}, \hyperpage{8}
+
+  \indexspace
+
+  \item {send\+\_\+msg}
+    \subitem {distributed\+\_\+system\+::\+I\+PC}, \hyperpage{9}
+  \item {send\+\_\+process\+\_\+fd\+\_\+}
+    \subitem {distributed\+\_\+system\+::\+I\+PC}, \hyperpage{9}
+  \item {Server\+Mutual\+Exclusion\+Policy}, \hyperpage{12}
+  \item {socket\+\_\+port\+\_\+}
+    \subitem {distributed\+\_\+system\+::\+I\+PC}, \hyperpage{10}
+  \item {start\+\_\+listening}
+    \subitem {distributed\+\_\+system\+::\+I\+PC}, \hyperpage{9}
+
+  \indexspace
+
+  \item {Token\+Ring\+Mutual\+Exclusion\+Policy}, \hyperpage{12}
+
+\end{theindex}

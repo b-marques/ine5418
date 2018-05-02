@@ -1,0 +1,20 @@
+var searchData=
+[
+  ['send_5fmsg',['send_msg',['../classdistributed__system_1_1IPC.html#acf64a1d5ddc831481592c0121f224b82',1,'distributed_system::IPC']]],
+  ['send_5fprocess_5ffd_5f',['send_process_fd_',['../classdistributed__system_1_1IPC.html#acd0d035f1eb6ec4e35eb6adb1a4ebd8c',1,'distributed_system::IPC']]],
+  ['send_5ftoken',['send_token',['../classdistributed__system_1_1MulticastMutualExclusionPolicy.html#af48d2022be2f51f240ef71f4108adbd7',1,'distributed_system::MulticastMutualExclusionPolicy::send_token()'],['../classdistributed__system_1_1ServerMutualExclusionPolicy.html#af48d2022be2f51f240ef71f4108adbd7',1,'distributed_system::ServerMutualExclusionPolicy::send_token()'],['../classdistributed__system_1_1TokenRingMutualExclusionPolicy.html#af48d2022be2f51f240ef71f4108adbd7',1,'distributed_system::TokenRingMutualExclusionPolicy::send_token()']]],
+  ['server_5fid',['SERVER_ID',['../const__data_8h.html#a77a6f4e0d13c76c96ba0a08bda9e1dba',1,'const_data.h']]],
+  ['server_5fpolicy_2ecpp',['server_policy.cpp',['../server__policy_8cpp.html',1,'']]],
+  ['server_5fpolicy_2eh',['server_policy.h',['../server__policy_8h.html',1,'']]],
+  ['server_5fresource_5frelease',['server_resource_release',['../classdistributed__system_1_1MulticastMutualExclusionPolicy.html#ad63c50cc4e3443242e9c30636ec51b0c',1,'distributed_system::MulticastMutualExclusionPolicy::server_resource_release()'],['../classdistributed__system_1_1ServerMutualExclusionPolicy.html#ad63c50cc4e3443242e9c30636ec51b0c',1,'distributed_system::ServerMutualExclusionPolicy::server_resource_release()']]],
+  ['server_5fresource_5frequest',['server_resource_request',['../classdistributed__system_1_1MulticastMutualExclusionPolicy.html#af42000fbadb1729fbd6a7e357dcae6ca',1,'distributed_system::MulticastMutualExclusionPolicy::server_resource_request()'],['../classdistributed__system_1_1ServerMutualExclusionPolicy.html#af42000fbadb1729fbd6a7e357dcae6ca',1,'distributed_system::ServerMutualExclusionPolicy::server_resource_request()']]],
+  ['servermutualexclusionpolicy',['ServerMutualExclusionPolicy',['../classdistributed__system_1_1ServerMutualExclusionPolicy.html',1,'distributed_system']]],
+  ['servermutualexclusionpolicy',['ServerMutualExclusionPolicy',['../classdistributed__system_1_1ServerMutualExclusionPolicy.html#ac92be0175c62808b6cc40992a7a18b45',1,'distributed_system::ServerMutualExclusionPolicy']]],
+  ['socket_5fbase_5fport',['SOCKET_BASE_PORT',['../const__data_8h.html#ad955b45758b100db5a277b6bb300afe8',1,'const_data.h']]],
+  ['socket_5fport_5f',['socket_port_',['../classdistributed__system_1_1IPC.html#adffbfa5995d32588eb323ce4c684fae7',1,'distributed_system::IPC']]],
+  ['source',['source',['../structdistributed__system_1_1message__t.html#aa3c7a4db993a2d188f67be9552a1ba9d',1,'distributed_system::message_t']]],
+  ['start',['start',['../classdistributed__system_1_1IPC.html#a60de64d75454385b23995437f1d72669',1,'distributed_system::IPC']]],
+  ['start_5fbroadcast',['start_broadcast',['../classdistributed__system_1_1MulticastMutualExclusionPolicy.html#a71d593aee31d2ec47bf9c5d7ed97bfdd',1,'distributed_system::MulticastMutualExclusionPolicy::start_broadcast()'],['../classdistributed__system_1_1ServerMutualExclusionPolicy.html#a71d593aee31d2ec47bf9c5d7ed97bfdd',1,'distributed_system::ServerMutualExclusionPolicy::start_broadcast()']]],
+  ['start_5flistening',['start_listening',['../classdistributed__system_1_1IPC.html#a9cc1938afb0447727d7242cf37028fcb',1,'distributed_system::IPC']]],
+  ['start_5fmsg',['START_MSG',['../message_8h.html#a42b54d3a40ae8e732d154acd28337e48',1,'message.h']]]
+];
