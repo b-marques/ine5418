@@ -1,3 +1,16 @@
+/**
+ *  @file server_policy.cpp
+ *
+ *  @brief Implementation file to the server/coordinator mutual exclusion policy.
+ * 
+ *  This file contains functions implementations to simulate the server/coordinator
+ *  mutual exclusion policy.
+ *
+ *  @author Bruno Marques do Nascimento
+ *  @date 29/04/2018 
+ *  @version 1.0 
+ */
+
 #include <iostream>
 #include <stdio.h>
 #include <string>
@@ -8,12 +21,17 @@
 #include "server_policy.h"
 
 using namespace distributed_system;
-
+/**
+ *  Constructor responsible to set main attributes.
+ */
 ServerMutualExclusionPolicy::ServerMutualExclusionPolicy(int id,
                                                          int n_process)
     : Process(id, n_process)
 {}
 
+/**
+ *  Put the process in a processing loop accordingly to his id.
+ */
 void ServerMutualExclusionPolicy::run()
 {
     ipc_.init();
@@ -59,6 +77,9 @@ void ServerMutualExclusionPolicy::run()
     }
 }
 
+/**
+ *  Handle a received message accordingly to the message type.
+ */
 void ServerMutualExclusionPolicy::process_message()
 {
     switch(atoi(received_message_.type)){
@@ -90,11 +111,19 @@ void ServerMutualExclusionPolicy::process_message()
     }
 }
 
+/**
+ *  Calculate que destination of a message accordingly to this policy.
+ *
+ *  @return the destination process id.
+ */
 int ServerMutualExclusionPolicy::destination()
 {
     return (id_+1) % n_process_;
 }
 
+/**
+ *  Server side handle of resource request requisition.
+ */
 void ServerMutualExclusionPolicy::server_resource_request()
 {
     if (work_queue.empty()) {
@@ -120,9 +149,12 @@ void ServerMutualExclusionPolicy::server_resource_request()
     }
 }
 
+/**
+ *  Server side handle of resource release requisition.
+ */
 void ServerMutualExclusionPolicy::server_resource_release()
 {
-    work_queue.pop();
+    if (!work_queue.empty()) work_queue.pop();
 
     if (work_queue.empty()) {
         PRINT("# Work queue is empty.              #\n");    
@@ -141,6 +173,9 @@ void ServerMutualExclusionPolicy::server_resource_release()
     }
 }
 
+/**
+ *  Build and send a resource release message from client side. 
+ */
 void ServerMutualExclusionPolicy::client_resource_release()
 {
     message_t msg;
@@ -152,6 +187,9 @@ void ServerMutualExclusionPolicy::client_resource_release()
     ipc_.send_msg(msg);
 }
 
+/**
+ *  Build and send a resource request message from client side. 
+ */
 void ServerMutualExclusionPolicy::client_resource_request()
 {
     message_t msg;
@@ -163,6 +201,9 @@ void ServerMutualExclusionPolicy::client_resource_request()
     ipc_.send_msg(msg);
 }
 
+/**
+ *  Inform to all spawned process that the system has started. 
+ */
 void ServerMutualExclusionPolicy::start_broadcast()
 {
     for (int i = 1; i < n_process_; ++i) {

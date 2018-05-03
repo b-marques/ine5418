@@ -28,7 +28,7 @@ void TokenRingMutualExclusionPolicy::run()
     PRINT("#                                   #\n");    
 
     /* Process ID != 0 */
-    if(id_) {
+    if(id_ != SERVER_ID) {
         PRINT("# Waiting for token...  (listening) #\n");    
         ipc_.start_listening();
         while(1) {
@@ -36,7 +36,7 @@ void TokenRingMutualExclusionPolicy::run()
             process_message();
             PRINT("# Waiting for token...  (listening) #\n");    
         }
-    /* Process ID == 0 */
+    /* Process ID == SERVER_ID */
     } else {
         PRINT("#                                   #\n");    
         PRINT("# Waiting for process spawn         #\n");

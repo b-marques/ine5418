@@ -22,7 +22,7 @@ int main(int argc, char const *argv[])
     int n_process = std::stoi(argv[2]); /* Total number of process */
     std::string policy(argv[3]);        /* Mutual exclusion policy */
 
-    if(policy == "--token_ring") {
+    if(policy == "--token-ring") {
         distributed_system::TokenRingMutualExclusionPolicy process(id, n_process);
         process.run();
     }

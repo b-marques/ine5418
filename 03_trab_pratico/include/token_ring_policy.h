@@ -19,4 +19,4 @@ class TokenRingMutualExclusionPolicy : private Process
 
 }
 
-#endif // TOKEN_RING_POLICY_H
+#endif //TOKEN_RING_POLICY_H

@@ -10,7 +10,7 @@ if [ "$1" == "--help" ]
     echo "  |"                         
     echo "  |-NUMBER_OF_PROCESS: minimum 2"                         
     echo "  |"                         
-    echo "  |-MUTUAL_EXCLUSION_POLICY: --token_ring"                         
+    echo "  |-MUTUAL_EXCLUSION_POLICY: --token-ring"                         
     echo "                             --server"                         
     echo "                             --multicast"                         
     echo                          
@@ -44,7 +44,7 @@ fi
 # ------------------------------------------------------ #
 # Check for policy requested by the user                 #
 # ------------------------------------------------------ #
-if [[ "$2" == "--token_ring" || ("$2" == "--server" || "$2" == "--multicast") ]]
+if [[ "$2" == "--token-ring" || ("$2" == "--server" || "$2" == "--multicast") ]]
   then
     MUTUAL_EXCLUSION_POLICY=$2
   else

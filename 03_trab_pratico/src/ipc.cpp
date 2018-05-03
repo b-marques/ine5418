@@ -8,7 +8,6 @@
  *  
  *  This file is responsible for manage the low level IPC API, it contains the
  *  implementation of this high level approach.
- *
  */
 
 #include <memory>

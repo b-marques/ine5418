@@ -8,7 +8,6 @@
  * 
  *  This file is a header file that contains the functions and variables of a 
  *  high level approach to the IPC API.
- *
  */
 
 #ifndef IPC_H
@@ -20,7 +19,7 @@
 namespace distributed_system{
 
 /**
- *  @brief Class that supports the user with the IPC API usage.  
+ *  Class that supports the user with the IPC API usage.  
  */ 
 class IPC
 {
@@ -47,4 +46,4 @@ class IPC
 
 }
 
-#endif // IPC_H
+#endif //IPC_H
