@@ -18,6 +18,7 @@
 #include "process.h"
 
 namespace distributed_system{
+    
 /**
  *  Class to simulate the server/coordinator mutual exclusion policy.
  */

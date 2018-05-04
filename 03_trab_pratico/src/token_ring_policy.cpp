@@ -1,3 +1,16 @@
+/**
+ *  @file token_ring_policy.cpp
+ *
+ *  @brief Implementation file to the token ring mutual exclusion policy.
+ * 
+ *  This file contains functions implementations to simulate the token ring
+ *  mutual exclusion policy.
+ *
+ *  @author Bruno Marques do Nascimento
+ *  @date 29/04/2018 
+ *  @version 1.0 
+ */
+
 #include <iostream>
 #include <stdio.h>
 #include <string>
@@ -9,11 +22,17 @@
 
 using namespace distributed_system;
 
+/**
+ *  Constructor responsible to set main attributes.
+ */
 TokenRingMutualExclusionPolicy::TokenRingMutualExclusionPolicy(int id,
                                                                int n_process)
     : Process(id, n_process)
 {}
 
+/**
+ *  Put the process in a processing loop accordingly to his id.
+ */
 void TokenRingMutualExclusionPolicy::run()
 {
 
@@ -56,6 +75,9 @@ void TokenRingMutualExclusionPolicy::run()
     }
 }
 
+/**
+ *  Handle a received message accordingly to the message type.
+ */
 void TokenRingMutualExclusionPolicy::process_message()
 {
     switch(atoi(received_message_.type)){
@@ -71,13 +93,19 @@ void TokenRingMutualExclusionPolicy::process_message()
     }
 }
 
+/**
+ *  Calculate que destination of a message accordingly to this policy.
+ *
+ *  @return the destination process id.
+ */
 int TokenRingMutualExclusionPolicy::destination()
 {
     return (id_+1) % n_process_;
 }
 
-
-
+/**
+ *  Build and send a token message to the next process on the ring. 
+ */
 void TokenRingMutualExclusionPolicy::send_token()
 {
     PRINT("#                                   #\n");

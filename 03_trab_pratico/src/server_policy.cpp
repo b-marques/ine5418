@@ -21,6 +21,7 @@
 #include "server_policy.h"
 
 using namespace distributed_system;
+
 /**
  *  Constructor responsible to set main attributes.
  */
