@@ -248,30 +248,3 @@ void MulticastMutualExclusionPolicy::start_broadcast()
         ipc_.send_msg(msg);
     } 
 }
-
-/**
- *  Wait until mutex file lock succeed. 
- */
-void MulticastMutualExclusionPolicy::lock_mutex()
-{
-    PRINT("#                                   #\n");
-    PRINT("# Locking file to make a request.   #\n");
-    PRINT("#                                   #\n");   
-    while(open(LOCK_FILE, O_CREAT | O_EXCL) == -1);
-    PRINT("#                                   #\n");
-    PRINT("# File locked successfully,         #\n");
-    PRINT("#                                   #\n");  
-}
-
-/**
- *  Mutex file unlock. 
- */
-void MulticastMutualExclusionPolicy::unlock_mutex()
-{
-    PRINT("#                                   #\n");
-    PRINT("# Unlocking mutex file.             #\n");
-    PRINT("#                                   #\n");   
-    if(remove(LOCK_FILE))
-        std::cerr << "Error deleting file..." << std::endl;
-
-}

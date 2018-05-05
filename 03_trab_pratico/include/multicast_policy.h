@@ -29,8 +29,6 @@ class MulticastMutualExclusionPolicy : private Process
     void local_clock_increment();
     void local_clock(int time);
     void start_broadcast();
-    void lock_mutex();
-    void unlock_mutex();
 
     int             local_clock_;
     State           state_;
