@@ -28,7 +28,6 @@
  */
 #define SOCKET_BASE_PORT 65000
 #define SERVER_ID        0
-#define LOCK_FILE        "mutex.lock"
 
 /** 
  *  @def T1_DEBUG

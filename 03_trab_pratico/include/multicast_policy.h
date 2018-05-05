@@ -18,9 +18,9 @@ class MulticastMutualExclusionPolicy : private Process
     };
     MulticastMutualExclusionPolicy(int id, int n_process);
     void run();
-    void listen();
 
   private:
+    void listen();
     void process_message();
     void send_resource_request();
     void release_resource();
