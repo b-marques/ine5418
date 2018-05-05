@@ -105,7 +105,12 @@ message_t IPC::receive_msg()
         std::cerr << "IPC: accept operation failed" << std::endl;
         exit(EXIT_FAILURE);
     }
-    read(new_socket , &msg, sizeof(message_t));
+
+    if (read(new_socket , &msg, sizeof(message_t)) == -1)
+    {
+        std::cerr << "IPC: read operation failed" << std::endl;
+        exit(-1);
+    }
     close(new_socket);
 
     PRINT_MSG("======================\n");
@@ -113,6 +118,7 @@ message_t IPC::receive_msg()
     PRINT_MSG("| MSG      SOURCE: %d |\n", atoi(msg.source));
     PRINT_MSG("| MSG DESTINATION: %d |\n", atoi(msg.destination));
     PRINT_MSG("| MSG    MSG TYPE: %d |\n", atoi(msg.type));
+    PRINT_MSG("| MSG    MSG DATA: %d |\n", atoi(msg.data));
     PRINT_MSG("======================\n");
     return msg;
 }
@@ -150,12 +156,17 @@ void IPC::send_msg(message_t msg)
         std::cerr << "IPC: send_msg() -> connection failed" << std::endl;
         exit(EXIT_FAILURE);
     }
-    write(send_process_fd_, static_cast<void*>(&msg) , sizeof(msg));
+    if (write(send_process_fd_, static_cast<void*>(&msg) , sizeof(msg)) == -1)
+    {
+        std::cerr << "IPC: write operation failed" << std::endl;
+        exit(-1);
+    }   
 
     PRINT_MSG("======================\n");
     PRINT_MSG("| MESSAGE SEND       |\n");
     PRINT_MSG("| MSG      SOURCE: %d |\n", atoi(msg.source));
     PRINT_MSG("| MSG DESTINATION: %d |\n", atoi(msg.destination));
     PRINT_MSG("| MSG    MSG TYPE: %d |\n", atoi(msg.type));
+    PRINT_MSG("| MSG    MSG DATA: %d |\n", atoi(msg.data));
     PRINT_MSG("======================\n");
 }

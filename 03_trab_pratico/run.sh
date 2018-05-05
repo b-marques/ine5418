@@ -61,6 +61,8 @@ NUMBER_OF_PROCESS_MINUS_1=$((NUMBER_OF_PROCESS - 1))
 
 PROCESS_BIN="./process"
 
+rm -f "mutex.lock"
+
 for ID in `seq 0 $NUMBER_OF_PROCESS_MINUS_1`
 do
     PROCESS_SPAWN="gnome-terminal --geometry=37x20 -x bash -c     \
@@ -68,7 +70,7 @@ do
                                          $ID                      \
                                          $NUMBER_OF_PROCESS       \
                                          $MUTUAL_EXCLUSION_POLICY \
-                                       \""
-                                       # ;bash\""
+                                         ;bash\""
+                                       #\""
     eval $PROCESS_SPAWN
 done

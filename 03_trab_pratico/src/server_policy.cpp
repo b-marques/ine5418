@@ -57,6 +57,7 @@ void ServerMutualExclusionPolicy::run()
                 received_message_ = ipc_.receive_msg();
                 process_message();
             }
+            /* Sleep until next random compute */
             sleep(7);
         }
     /* Process ID == SERVER_ID */
@@ -83,8 +84,8 @@ void ServerMutualExclusionPolicy::run()
  */
 void ServerMutualExclusionPolicy::process_message()
 {
-    switch(atoi(received_message_.type)){
-        
+    switch(atoi(received_message_.type))
+    {
         case REQUEST_MSG:
             PRINT("#                                   #\n");
             PRINT("# REQUEST FROM PROCESS: %d           #\n", atoi(received_message_.source));
@@ -127,11 +128,11 @@ int ServerMutualExclusionPolicy::destination()
  */
 void ServerMutualExclusionPolicy::server_resource_request()
 {
-    if (work_queue.empty()) {
+    if (work_queue_.empty()) {
         PRINT("# Work queue is empty.              #\n");    
         
         int process = atoi(received_message_.source);
-        work_queue.push(process);
+        work_queue_.push(process);
 
         message_t msg;
         sprintf(msg.destination, "%d", process);
@@ -146,7 +147,7 @@ void ServerMutualExclusionPolicy::server_resource_request()
         PRINT("# Work queue is not empty .         #\n");
         
         PRINT("# Putting PROCESS %d on queue.       #\n", process);           
-        work_queue.push(process);
+        work_queue_.push(process);
     }
 }
 
@@ -155,13 +156,16 @@ void ServerMutualExclusionPolicy::server_resource_request()
  */
 void ServerMutualExclusionPolicy::server_resource_release()
 {
-    if (!work_queue.empty()) work_queue.pop();
+    /* Remove current process from work queue */
+    if (!work_queue_.empty()) work_queue_.pop();
 
-    if (work_queue.empty()) {
+
+    /* Check for next process on queue */
+    if (work_queue_.empty()) {
         PRINT("# Work queue is empty.              #\n");    
     } else {
         PRINT("# Selecting next process on queue.  #\n");
-        int next = work_queue.front();
+        int next = work_queue_.front();
         PRINT("# PROCESS %d selected.               #\n", next);
 
         message_t msg;

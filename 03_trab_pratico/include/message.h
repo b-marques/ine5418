@@ -36,6 +36,8 @@
 #define REQUEST_MSG 1  //* Resource request   */
 #define RELEASE_MSG 2  //* Resource release   */
 #define START_MSG   3  //* Start message      */
+#define ALLOW_MSG   4  //* Allow message      */
+
 
 
 namespace distributed_system{

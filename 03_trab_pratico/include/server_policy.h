@@ -37,7 +37,7 @@ class ServerMutualExclusionPolicy : private Process
     void  client_resource_release();
     void  start_broadcast();
 
-    std::queue<int> work_queue; //* Work queue of process */
+    std::queue<int> work_queue_; //* Work queue of process */
 };
 
 }
