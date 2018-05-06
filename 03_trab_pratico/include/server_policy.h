@@ -3,8 +3,8 @@
  *
  *  @brief Header file to the server/coordinator mutual exclusion policy.
  * 
- *  This file contains functions and attributes to simulate the server/coordinator
- *  mutual exclusion policy.
+ *  This file contains functions and attributes to simulate the 
+ *  server/coordinator mutual exclusion policy.
  *
  *  @author Bruno Marques do Nascimento
  *  @date 29/04/2018 

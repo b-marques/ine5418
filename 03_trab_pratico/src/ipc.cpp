@@ -96,8 +96,8 @@ void IPC::start_listening()
  */
 message_t IPC::receive_msg()
 {
-    message_t msg;        /* Message received data */
-    int       new_socket; /* New connection socket */
+    message_t msg;            /* Message received data */
+    int       new_socket = 0; /* New connection socket */
 
     if ((new_socket = accept(rcv_process_fd_, (struct sockaddr *)&address_, 
                        (socklen_t*)&address_length_))<0)
@@ -106,11 +106,7 @@ message_t IPC::receive_msg()
         exit(EXIT_FAILURE);
     }
 
-    if (read(new_socket , &msg, sizeof(message_t)) == -1)
-    {
-        std::cerr << "IPC: read operation failed" << std::endl;
-        exit(-1);
-    }
+    while(read(new_socket , &msg, sizeof(message_t)) == -1);
     close(new_socket);
 
     PRINT_MSG("======================\n");
@@ -120,6 +116,7 @@ message_t IPC::receive_msg()
     PRINT_MSG("| MSG    MSG TYPE: %d |\n", atoi(msg.type));
     PRINT_MSG("| MSG    MSG DATA: %d |\n", atoi(msg.data));
     PRINT_MSG("======================\n");
+    close(new_socket);
     return msg;
 }
 
@@ -134,11 +131,7 @@ void IPC::send_msg(message_t msg)
     struct sockaddr_in serv_addr;
 
     /* Creating process socket file descriptor */
-    if ((send_process_fd_ = socket(AF_INET, SOCK_STREAM, 0)) == 0)
-    {
-        std::cerr << "IPC: socket file descriptor creation failed." << std::endl;
-        exit(EXIT_FAILURE);
-    }
+    while ((send_process_fd_ = socket(AF_INET, SOCK_STREAM, 0)) == -1);
 
     memset(&serv_addr, '0', sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
@@ -147,20 +140,14 @@ void IPC::send_msg(message_t msg)
     /* Convert IPv4 and IPv6 addresses from text to binary form */
     if(inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr)<=0) 
     {
-        std::cerr << "IPC: Invalid address/ Address not supported" << std::endl;
+        std::cerr << "IPC: Invalid address / Address not supported" << std::endl;
         exit(EXIT_FAILURE);
     }
 
-    if (connect(send_process_fd_, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
-    {
-        std::cerr << "IPC: send_msg() -> connection failed" << std::endl;
-        exit(EXIT_FAILURE);
-    }
-    if (write(send_process_fd_, static_cast<void*>(&msg) , sizeof(msg)) == -1)
-    {
-        std::cerr << "IPC: write operation failed" << std::endl;
-        exit(-1);
-    }   
+    while(connect(send_process_fd_, (struct sockaddr *)&serv_addr, sizeof(serv_addr)));
+
+    while(write(send_process_fd_, static_cast<void*>(&msg) , sizeof(msg)) == -1);
+    close(send_process_fd_);   
 
     PRINT_MSG("======================\n");
     PRINT_MSG("| MESSAGE SEND       |\n");

@@ -1,10 +1,20 @@
-#include <sys/file.h>
-#include <string>
+/**
+ *  @file multicast_policy.cpp
+ *
+ *  @brief Implementation file to the multicast with Lamport's clock mutual 
+ *         exclusion policy.
+ * 
+ *  This file contains functions implementations to simulate multicast with
+ *  Lamport's clock mutual exclusion policy.
+ *
+ *  @author Bruno Marques do Nascimento
+ *  @date 29/04/2018 
+ *  @version 1.0 
+ */
+
 #include <thread>    /* std::thread  */
-#include <stdio.h>   /* printf       */
-#include <fstream>   /* std::fstream */
 #include <iostream>  /* std::cin     */
-#include <unistd.h> 
+#include <unistd.h>  /* sleep        */
 #include <algorithm> /* std::max     */
 
 #include "const_data.h"
@@ -12,12 +22,21 @@
 
 using namespace distributed_system;
 
+/**
+ *  Constructor responsible to set main attributes.
+ *  Besides set main attributes, it starts the msg_mutex and clock_mutex.
+ *
+ *  @param id the process id.
+ *  @param n_process the total number of process spawned.
+ */
 MulticastMutualExclusionPolicy::MulticastMutualExclusionPolicy(int id,
-                                                         int n_process)
+                                                               int n_process)
     : Process(id, n_process),
-      local_clock_{id},
-      state_{RELEASED}
+    state_{RELEASED},
+    local_clock_{id}
 {
+    pthread_mutex_init(&clock_mutex_, NULL);
+    pthread_mutex_init(&msg_mutex_, NULL);
 }
 
 /**
@@ -54,31 +73,35 @@ void MulticastMutualExclusionPolicy::run()
         case RELEASED:
             PRINT("#                                   #\n");    
             PRINT("# Checking for work...              #\n");    
-            PRINT("#                                   #\n");
+            pthread_mutex_lock(&clock_mutex_);
             local_clock_increment();
+            pthread_mutex_unlock(&clock_mutex_);
             if (random_computation_time()) {
-                PRINT("#                                   #\n");    
                 PRINT("# I Have some work to do...         #\n");    
                 PRINT("# Changing state to: WANTED         #\n");
-                PRINT("#                                   #\n");    
                 state_ = WANTED;
             } else {
-                sleep(4);
+                PRINT("# I don't have work to do by now... #\n");    
+                sleep(5);
             }
+            PRINT("#                                   #\n");    
             break;
 
         case WANTED:
             send_resource_request();
             wait_resource();
+            PRINT("#                                   #\n");    
+            PRINT("# Changing state to: HELD           #\n");
             state_ = HELD;
             break;
 
         case HELD:
             compute();
+            PRINT("#                                   #\n");    
+            PRINT("# Changing state to: RELEASED       #\n");
             state_ = RELEASED;
             release_resource();
             sleep(3);
-
             break;
 
         default:
@@ -90,14 +113,43 @@ void MulticastMutualExclusionPolicy::run()
 
 /**
  *  Listen to messages from other process.
+ *  This method will be started asynchronously.
  */ 
 void MulticastMutualExclusionPolicy::listen()
 {
     while (1) {
         received_message_ = ipc_.receive_msg();
         process_message();
-        sleep(1);
     }
+}
+
+/**
+ *  Wait for "ALLOW" message, from all process. 
+ */
+void MulticastMutualExclusionPolicy::wait_resource()
+{   
+    allow_msg_set_.clear();
+    PRINT("#                                   #\n");
+    PRINT("# Waiting resource to be released.  #\n");
+    PRINT("#                                   #\n");   
+    unsigned int n_allow_msgs = n_process_-1;
+    while (allow_msg_set_.size() != n_allow_msgs) {
+    }
+}
+
+/**
+ *  Inform to all spawned process that the system has started. 
+ */
+void MulticastMutualExclusionPolicy::start_broadcast()
+{
+    for (int i = 1; i < n_process_; ++i) {
+        message_t msg;
+        sprintf(msg.destination, "%d", (id_+i)%n_process_);
+        sprintf(msg.source, "%d", id_);
+        sprintf(msg.data, "%d", local_clock_);
+        sprintf(msg.type, "%d", START_MSG);
+        ipc_.send_msg(msg);
+    } 
 }
 
 /**
@@ -110,7 +162,6 @@ void MulticastMutualExclusionPolicy::process_message()
     {
         PRINT("#                                   #\n");
         PRINT("# REQUEST FROM PROCESS: %d           #\n", atoi(received_message_.source));
-        PRINT("#                                   #\n");
         process_request();
         break;
     }
@@ -127,62 +178,11 @@ void MulticastMutualExclusionPolicy::process_message()
         return;
     }
 
-    /* Lamport clock update when receive message */
+    /* Lamport's clock update when receive message */
     int source_clock = atoi(received_message_.data);
-    local_clock(std::max(source_clock, local_clock_) + 1);
-}
-/**
- *  Inform to all spawned process the will to use the resource. 
- */
-void MulticastMutualExclusionPolicy::send_resource_request()
-{
-    local_clock_increment();
-    PRINT("#                                   #\n");
-    PRINT("# Requesting resource access...     #\n");
-    PRINT("#                                   #\n");
-    for (int i = 1; i < n_process_; ++i) {
-        message_t msg;
-        sprintf(msg.destination, "%d", (id_+i)%n_process_);
-        sprintf(msg.source, "%d", id_);
-        sprintf(msg.data, "%d", local_clock_);
-        sprintf(msg.type, "%d", REQUEST_MSG);
-        ipc_.send_msg(msg);
-    }
-}
-
-/**
- *  Inform the releasing of the resource. 
- */
-void MulticastMutualExclusionPolicy::release_resource()
-{
-    local_clock_increment();
-    PRINT("#                                   #\n");
-    PRINT("# Releasing resource...             #\n");
-    PRINT("#                                   #\n");
-    while (!requisition_queue_.empty()) {
-        message_t msg;
-        sprintf(msg.destination, "%d", requisition_queue_.front());
-        sprintf(msg.source, "%d", id_);
-        sprintf(msg.data, "%d", local_clock_);
-        sprintf(msg.type, "%d", ALLOW_MSG);
-        ipc_.send_msg(msg);
-        requisition_queue_.pop();
-    }
-}
-
-/**
- *  Wait for "ALLOW" message, from all process. 
- */
-void MulticastMutualExclusionPolicy::wait_resource()
-{   
-    allow_msg_set_.clear();
-    PRINT("#                                   #\n");
-    PRINT("# Waiting resource to be released.  #\n");
-    PRINT("#                                   #\n");   
-    unsigned int n_allow_msgs = n_process_-1;
-    while (allow_msg_set_.size() != n_allow_msgs) {
-        sleep(0.5);
-    }
+    pthread_mutex_lock(&clock_mutex_);
+    local_clock(std::max(source_clock, static_cast<int>(local_clock_)) + 1);
+    pthread_mutex_unlock(&clock_mutex_);
 }
 
 /**
@@ -192,20 +192,19 @@ void MulticastMutualExclusionPolicy::process_request()
 {
     int source_clock = atoi(received_message_.data);
     int source_id    = atoi(received_message_.source);
-    if (state_ == HELD){
-        PRINT("#                                   #\n");
+    
+    /* Process already on requisition queue */
+    if(requisition_queue_.find(source_id) != requisition_queue_.end())
+        return;
+
+    if ((state_ == HELD) ||
+        (state_ == WANTED && (request_time_ < source_clock ||
+                             (request_time_ == source_clock && id_ < source_id)))) {
         PRINT("# PROCESS %d pushed to req. queue.   #\n", atoi(received_message_.source));
         PRINT("#                                   #\n");
-        requisition_queue_.push(source_id);
-    } else if (state_ == WANTED &&
-        (local_clock_ < source_clock || (local_clock_ == source_clock && id_ < source_id))) {
-        PRINT("#                                   #\n");
-        PRINT("# PROCESS %d pushed to req. queue.   #\n", atoi(received_message_.source));
-        PRINT("#                                   #\n");
-        requisition_queue_.push(source_id);
+        requisition_queue_.insert(source_id);
 
     } else {
-        PRINT("#                                   #\n");
         PRINT("# Allowing resource to PROCESS %d    #\n", atoi(received_message_.source));
         PRINT("#                                   #\n"); 
         message_t msg;
@@ -213,8 +212,41 @@ void MulticastMutualExclusionPolicy::process_request()
         sprintf(msg.source, "%d", id_);
         sprintf(msg.data, "%d", local_clock_);
         sprintf(msg.type, "%d", ALLOW_MSG);
+        pthread_mutex_lock(&msg_mutex_);
         ipc_.send_msg(msg);
+        pthread_mutex_unlock(&msg_mutex_);
     }
+}
+
+/**
+ *  Inform the releasing of the resource. 
+ */
+void MulticastMutualExclusionPolicy::release_resource()
+{
+    PRINT("#                                   #\n");
+    PRINT("# Releasing resource...             #\n");
+    PRINT("#                                   #\n");
+    for (auto queued_id : requisition_queue_) {
+        message_t msg;
+        sprintf(msg.destination, "%d", queued_id);
+        sprintf(msg.source, "%d", id_);
+        sprintf(msg.data, "%d", local_clock_);
+        sprintf(msg.type, "%d", ALLOW_MSG);
+        pthread_mutex_lock(&msg_mutex_);
+        ipc_.send_msg(msg);
+        pthread_mutex_unlock(&msg_mutex_);
+    }
+    requisition_queue_.clear();
+}
+
+/**
+ *  Setter method to local clock.
+ *
+ *  @param time value that local clock will assume.
+ */
+void MulticastMutualExclusionPolicy::local_clock(int time)
+{
+    local_clock_ = time;
 }
 
 /**
@@ -226,25 +258,25 @@ void MulticastMutualExclusionPolicy::local_clock_increment()
 }
 
 /**
- *  Setter method to local clock. 
+ *  Inform to all spawned process the will to use the resource. 
  */
-void MulticastMutualExclusionPolicy::local_clock(int time)
+void MulticastMutualExclusionPolicy::send_resource_request()
 {
-    local_clock_ = time;
-}
-
-
-/**
- *  Inform to all spawned process that the system has started. 
- */
-void MulticastMutualExclusionPolicy::start_broadcast()
-{
+    pthread_mutex_lock(&clock_mutex_);
+    local_clock_increment();
+    request_time_ = local_clock_;
+    pthread_mutex_unlock(&clock_mutex_);
+    PRINT("#                                   #\n");
+    PRINT("# Requesting resource access...     #\n");
+    PRINT("#                                   #\n");
     for (int i = 1; i < n_process_; ++i) {
         message_t msg;
         sprintf(msg.destination, "%d", (id_+i)%n_process_);
         sprintf(msg.source, "%d", id_);
-        sprintf(msg.data, "%d", local_clock_);
-        sprintf(msg.type, "%d", START_MSG);
+        sprintf(msg.data, "%d", request_time_);
+        sprintf(msg.type, "%d", REQUEST_MSG);
+        pthread_mutex_lock(&msg_mutex_);
         ipc_.send_msg(msg);
-    } 
+        pthread_mutex_unlock(&msg_mutex_);
+    }
 }

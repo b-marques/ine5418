@@ -11,11 +11,8 @@
  *  @version 1.0 
  */
 
-#include <iostream>
-#include <stdio.h>
-#include <string>
-#include <random>
-#include <unistd.h>
+#include <iostream> /* std::cin */
+#include <unistd.h> /* sleep    */
 
 #include "const_data.h"
 #include "token_ring_policy.h"
@@ -24,6 +21,9 @@ using namespace distributed_system;
 
 /**
  *  Constructor responsible to set main attributes.
+ *
+ *  @param id the process id.
+ *  @param n_process the total number of process spawned.
  */
 TokenRingMutualExclusionPolicy::TokenRingMutualExclusionPolicy(int id,
                                                                int n_process)
@@ -35,10 +35,7 @@ TokenRingMutualExclusionPolicy::TokenRingMutualExclusionPolicy(int id,
  */
 void TokenRingMutualExclusionPolicy::run()
 {
-
     ipc_.init();
-    
-    /* OUTPUT INFORMATION     */
     system("clear");
     PRINT("# --------------------------------- #\n");
     PRINT("# PROCESS_ID: %d                     #\n", id_);
@@ -81,15 +78,15 @@ void TokenRingMutualExclusionPolicy::run()
 void TokenRingMutualExclusionPolicy::process_message()
 {
     switch(atoi(received_message_.type)){
-        case TOKEN_MSG:
-            PRINT("#                                   #\n");
-            PRINT("# TOKEN RECEIVED                    #\n");
-            PRINT("#                                   #\n");    
-            random_computation_time();
-            compute();
-            send_token();
-        default:
-            return;
+    case TOKEN_MSG:
+        PRINT("#                                   #\n");
+        PRINT("# TOKEN RECEIVED                    #\n");
+        PRINT("#                                   #\n");    
+        random_computation_time();
+        compute();
+        send_token();
+    default:
+        return;
     }
 }
 

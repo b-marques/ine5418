@@ -18,8 +18,8 @@
  *  @def SOCKET_BASE_PORT
  *  @brief Default socket base port.
  *
- *  Initial base port value utilized by the process. The process will bind to the
- *  port number resulting from the sum of SOCKET_BASE_PORT and his ID. 
+ *  Initial base port value utilized by the process. The process will bind to 
+ *  the port number resulting from the sum of SOCKET_BASE_PORT and his ID. 
  */
 
 /** 
@@ -50,8 +50,8 @@
  *  @def PRINT(...)
  *  @brief Macro to print process workflow.
  *
- *  This macro prints the process workflow when the variable T1_DEBUG is set to 1.
- *  If T1_DEBUG is 0, this macro will be ignored.
+ *  This macro prints the process workflow when the variable T1_DEBUG is set to 
+ *  1. If T1_DEBUG is 0, this macro will be ignored.
  */
 #if T1_DEBUG == 1
     #define PRINT(...) printf(__VA_ARGS__)       
@@ -63,8 +63,8 @@
  *  @def PRINT_MSG(...)
  *  @brief Macro to print messages exchanged between process.
  *
- *  This macro prints the messages exchanged between the spawned process, showing
- *  source, destination and message type.
+ *  This macro prints the messages exchanged between the spawned process,
+ *  showing source, destination and message type.
  */
 #if T1_DEBUG_MSGS == 1
     #define PRINT_MSG(...) printf(__VA_ARGS__)       

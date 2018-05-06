@@ -11,11 +11,8 @@
  *  @version 1.0 
  */
 
-#include <iostream>
-#include <stdio.h>
-#include <string>
-#include <random>
-#include <unistd.h>
+#include <iostream> /* std::cin */
+#include <unistd.h> /* sleep    */
 
 #include "const_data.h"
 #include "server_policy.h"
@@ -24,6 +21,9 @@ using namespace distributed_system;
 
 /**
  *  Constructor responsible to set main attributes.
+ *
+ *  @param id the process id.
+ *  @param n_process the total number of process spawned.
  */
 ServerMutualExclusionPolicy::ServerMutualExclusionPolicy(int id,
                                                          int n_process)
@@ -86,30 +86,30 @@ void ServerMutualExclusionPolicy::process_message()
 {
     switch(atoi(received_message_.type))
     {
-        case REQUEST_MSG:
-            PRINT("#                                   #\n");
-            PRINT("# REQUEST FROM PROCESS: %d           #\n", atoi(received_message_.source));
-            PRINT("#                                   #\n");
-            server_resource_request();
-            break;
+    case REQUEST_MSG:
+        PRINT("#                                   #\n");
+        PRINT("# REQUEST FROM PROCESS: %d           #\n", atoi(received_message_.source));
+        PRINT("#                                   #\n");
+        server_resource_request();
+        break;
 
-        case RELEASE_MSG:
-            PRINT("#                                   #\n");
-            PRINT("# PROCESS %d released resource.      #\n", atoi(received_message_.source));
-            PRINT("#                                   #\n");
-            server_resource_release();
-            break;
+    case RELEASE_MSG:
+        PRINT("#                                   #\n");
+        PRINT("# PROCESS %d released resource.      #\n", atoi(received_message_.source));
+        PRINT("#                                   #\n");
+        server_resource_release();
+        break;
 
-        case TOKEN_MSG:
-            PRINT("#                                   #\n");
-            PRINT("# TOKEN RECEIVED FROM %d             #\n", atoi(received_message_.source));
-            PRINT("#                                   #\n");    
-            compute();
-            client_resource_release();
-            break;
+    case TOKEN_MSG:
+        PRINT("#                                   #\n");
+        PRINT("# TOKEN RECEIVED FROM %d             #\n", atoi(received_message_.source));
+        PRINT("#                                   #\n");    
+        compute();
+        client_resource_release();
+        break;
 
-        default:
-            return;
+    default:
+        return;
     }
 }
 
