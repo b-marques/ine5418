@@ -45,11 +45,13 @@ void TokenRingMutualExclusionPolicy::run()
 
     /* Process ID != 0 */
     if(id_ != SERVER_ID) {
+        PRINT("#                                   #\n");
         PRINT("# Waiting for token...  (listening) #\n");    
         ipc_.start_listening();
         while(1) {
             received_message_ = ipc_.receive_msg();
             process_message();
+            PRINT("#                                   #\n");
             PRINT("# Waiting for token...  (listening) #\n");    
         }
     /* Process ID == SERVER_ID */
@@ -62,6 +64,7 @@ void TokenRingMutualExclusionPolicy::run()
         PRINT("#                                   #\n");    
         PRINT("# Generating token...               #\n");
         send_token();
+        PRINT("#                                   #\n");
         PRINT("# Waiting for token...  (listening) #\n");    
         ipc_.start_listening();
         while(1) {
@@ -79,9 +82,10 @@ void TokenRingMutualExclusionPolicy::process_message()
 {
     switch(atoi(received_message_.type)){
     case TOKEN_MSG:
+        system("clear");    
         PRINT("#                                   #\n");
         PRINT("# TOKEN RECEIVED                    #\n");
-        PRINT("#                                   #\n");    
+        PRINT("#                                   #\n");
         random_computation_time();
         compute();
         send_token();
@@ -111,6 +115,5 @@ void TokenRingMutualExclusionPolicy::send_token()
     sprintf(msg.source, "%d", id_);
     sprintf(msg.destination, "%d", destination());
     sprintf(msg.type, "%d", TOKEN_MSG);
-
     ipc_.send_msg(msg);
 }

@@ -82,7 +82,7 @@ void MulticastMutualExclusionPolicy::run()
                 state_ = WANTED;
             } else {
                 PRINT("# I don't have work to do by now... #\n");    
-                sleep(5);
+                sleep(7);
             }
             PRINT("#                                   #\n");    
             break;
@@ -101,7 +101,7 @@ void MulticastMutualExclusionPolicy::run()
             PRINT("# Changing state to: RELEASED       #\n");
             state_ = RELEASED;
             release_resource();
-            sleep(3);
+            sleep(7);
             break;
 
         default:

@@ -65,7 +65,8 @@ rm -f "mutex.lock"
 
 for ID in `seq 0 $NUMBER_OF_PROCESS_MINUS_1`
 do
-    PROCESS_SPAWN="gnome-terminal --geometry=37x20 -x bash -c     \
+    X_COORD=$(((ID*355) + 80))
+    PROCESS_SPAWN="gnome-terminal --geometry=37x20+$X_COORD+100 -x bash -c     \
                                        \"$PROCESS_BIN             \
                                          $ID                      \
                                          $NUMBER_OF_PROCESS       \

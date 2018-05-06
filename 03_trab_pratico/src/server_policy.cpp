@@ -71,10 +71,12 @@ void ServerMutualExclusionPolicy::run()
         PRINT("#                                   #\n");    
         PRINT("# Start listening requests...       #\n");    
         ipc_.start_listening();
+        int counter;
         while(1) {
             received_message_ = ipc_.receive_msg();
             process_message();
-            PRINT("# Waiting for requests...           #\n");    
+            PRINT("# ================================= #\n\n\n");
+            ++counter; /* printing control */
         }
     }
 }
@@ -201,7 +203,7 @@ void ServerMutualExclusionPolicy::client_resource_request()
     sprintf(msg.destination, "%d", SERVER_ID);
     sprintf(msg.source, "%d", id_);
     sprintf(msg.type, "%d", REQUEST_MSG);
-
+    system("clear");
     PRINT("# REQUESTING RESOURCE.               #\n");    
     ipc_.send_msg(msg);
 }
