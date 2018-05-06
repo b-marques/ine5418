@@ -71,12 +71,10 @@ void ServerMutualExclusionPolicy::run()
         PRINT("#                                   #\n");    
         PRINT("# Start listening requests...       #\n");    
         ipc_.start_listening();
-        int counter;
         while(1) {
             received_message_ = ipc_.receive_msg();
             process_message();
             PRINT("# ================================= #\n\n\n");
-            ++counter; /* printing control */
         }
     }
 }
