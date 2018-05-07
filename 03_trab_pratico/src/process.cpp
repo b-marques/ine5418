@@ -56,6 +56,6 @@ int Process::random_computation_time()
     rng.seed(std::random_device()());
     std::uniform_int_distribution<std::mt19937::result_type> dist(0,4);
     computation_time_ = dist(rng);
-    computation_time_ = computation_time_ ? 9 : 0;
+    computation_time_ = computation_time_ ? computation_time_+3 : 0;
     return computation_time_;
 }
